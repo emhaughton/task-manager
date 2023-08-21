@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Task;
+use App\Services\Api\TaskCreateService;
 use Illuminate\Http\Request;
 
 class TaskCreateController extends Controller
 {
+    public function __construct(private TaskCreateService $taskCreateServices)
+    {
+    }
+
     /**
      * Store a newly created resource in storage.
-    */
-    public function __invoke(Request $request)
+     * @return object respuesta de la creación de datos.
+     */
+    public function __invoke(Request $request): object
     {
         $request->validate([
             'uuid' => 'required|string|max:36',
@@ -20,17 +25,6 @@ class TaskCreateController extends Controller
             'category_uuid' => 'required|string|max:36',
         ]);
 
-        $task = Task::create([
-            'uuid' => $request->uuid,
-            'name' => $request->name,
-            'description' => $request->description,
-            'status_uuid' => $request->status_uuid,
-            'category_uuid' => $request->category_uuid,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'data' => $task
-        ], 201);
+        return ($this->taskCreateServices)($request->all());
     }
 }

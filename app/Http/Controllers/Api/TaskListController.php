@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Task;
-use Illuminate\Http\Request;
+use App\Services\Api\TaskListService;
+use Illuminate\Support\Collection;
 
 class TaskListController extends Controller
 {
+    public function __construct(
+        private TaskListService $taskListServices
+    ) {
+    }
+
     /**
-     * Display a listing of the resource.
+     * Lista todos las tareas de la base datos
      */
     public function __invoke()
     {
-        $tasks = Task::all();
-        return response()->json([
-            'success' => true,
-            'data' => $tasks
-        ], 200);
+        return $this->taskListServices->__invoke();
     }
 }

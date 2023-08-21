@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Services\Api\TaskUpdateService;
 use Illuminate\Http\Request;
 
 class TaskUpdateController extends Controller
 {
+    public function __construct(
+        private TaskUpdateService $taskUpdateServices
+    ) {
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -20,21 +26,9 @@ class TaskUpdateController extends Controller
         ]);
 
         if ($task) {
-            $task->update([
-                'name' => $request->name,
-                'description' => $request->description,
-                'status_uuid' => $request->status_uuid,
-                'category_uuid' => $request->category_uuid,
-            ]);
-
-            return response()->json([
-                'success' => true,
-                'data' => $task
-            ], 200);
+            ($this->taskUpdateServices)($request->all(), $task);
         }
 
-        return response()->json([
-            'success' => false,
-        ], 404);
+        return $task;
     }
 }

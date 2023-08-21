@@ -22,7 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('task', [TaskListController::class,'__invoke']);
-Route::delete('task/{task}', [TaskDeleteController::class,'__invoke']);
-Route::post('task', [TaskCreateController::class,'__invoke']);
-Route::put('task/{task}', [TaskUpdateController::class,'__invoke']);
+Route::middleware(['api', 'json-response']) // Use nuestro JSON Middleware
+    ->group(function () {
+        Route::get('task', TaskListController::class);
+        Route::post('task', TaskCreateController::class);
+        Route::put('task/{task}', TaskUpdateController::class);
+        Route::delete('task/{task}', TaskDeleteController::class);
+    }
+);
