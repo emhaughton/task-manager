@@ -11,7 +11,7 @@ class Category extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $table = 'task';
+    protected $table = 'category';
 
     protected $primaryKey = 'uuid';
 
