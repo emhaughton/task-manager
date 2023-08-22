@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class StatusSeeder extends Seeder
 {
@@ -12,6 +13,7 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
         \DB::table('status')->truncate();
         \DB::table('status')->insert(
             [
@@ -29,5 +31,6 @@ class StatusSeeder extends Seeder
                 ]
             ]
         );
+        Schema::enableForeignKeyConstraints();
     }
 }
