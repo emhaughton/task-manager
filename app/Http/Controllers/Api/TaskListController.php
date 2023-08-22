@@ -15,9 +15,11 @@ class TaskListController extends Controller
 
     /**
      * Lista todos las tareas de la base datos
+     *
+     * @return collection
      */
-    public function __invoke()
+    public function __invoke(): Collection
     {
-        return $this->taskListServices->__invoke();
+        return ($this->taskListServices)();
     }
 }
