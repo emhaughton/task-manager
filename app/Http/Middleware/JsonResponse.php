@@ -15,11 +15,17 @@ class JsonResponse
      */
     public function handle(Request $request, Closure $next): Response {
 
-        $response = $next($request);
+        $responseObject = $next($request);
+        $response = get_object_vars($responseObject);
+        $exception = $response['exception'];
+        $message = $exception ? 'Internal server error' : 'Success';
+        $data = !$exception ? $responseObject->getContent() : '';
+
 
         return response()->json([
-                'data' => json_decode($response->getContent()),
-                'success' => true
-            ],  $response->getStatusCode());
+                'data' => json_decode($data),
+                'message' => $message,
+                'success' => empty($exception)
+            ],  $responseObject->getStatusCode());
     }
 }
